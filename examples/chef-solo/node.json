@@ -1,0 +1,17 @@
+{
+  "django_application": {
+    "name":"django_demo",
+    "repository_url":"https://github.com/coderanger/packaginator.git",
+    "revision":"master",
+    "owner":"nobody",
+    "group":"nogroup",
+    "db": {
+      "host":"localhost",
+      "schema":"django_demo",
+      "engine":"postgresql_psycopg2",
+      "username":"packaginator",
+      "password":"donotusethisinproduction,changeme"
+    }
+  },
+  "run_list": [ "recipe[django_application]" ]
+}
