@@ -23,13 +23,12 @@ application "packaginator" do
   group "nogroup"
   repository "https://github.com/coderanger/packaginator.git"
   revision "master"
-  migrate true
   packages ["libpq-dev", "git-core", "mercurial"]
 
   django do 
     packages ["redis"]
     requirements "requirements/mkii.txt"
-    settings_template "settings.py.erb"
+    #settings_template "settings.py.erb"
     debug true
     collectstatic "build_static --noinput"
     database do
@@ -38,6 +37,6 @@ application "packaginator" do
       username "packaginator"
       password "awesome_password"
     end
-    database_master_role "packaginator_database_master"
+    #database_master_role "packaginator_database_master"
   end
 end
