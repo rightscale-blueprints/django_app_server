@@ -21,6 +21,6 @@
 actions :create, :delete
 
 attribute :path, :kind_of => String, :name_attribute => true
-attribute :interpreter, :default => 'python2.6'
+attribute :interpreter, :default => 'python2.7'
 attribute :owner, :regex => Chef::Config[:user_valid_regex]
 attribute :group, :regex => Chef::Config[:group_valid_regex]
