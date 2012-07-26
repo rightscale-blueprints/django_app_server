@@ -1,0 +1,13 @@
+#!/usr/bin/env ruby
+#^syntax detection
+
+site 'http://community.opscode.com/api/v1'
+
+cookbook 'application_python',
+   :git => 'https://github.com/opscode-cookbooks/application_python',
+   :ref => 'master'
+
+cookbook 'django_application',
+   :git => 'https://github.com/flaccid/cookbooks',
+   :path => 'cookbooks/django_application',
+   :ref => 'master'
