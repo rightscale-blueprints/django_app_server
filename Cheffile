@@ -3,11 +3,19 @@
 
 site 'http://community.opscode.com/api/v1'
 
+cookbook 'django_application',
+   :git => 'https://github.com/flaccid/cookbooks',
+   :path => 'cookbooks/django_application',
+   :ref => 'master'
+
 cookbook 'application_python',
    :git => 'https://github.com/opscode-cookbooks/application_python',
    :ref => 'master'
 
-cookbook 'django_application',
-   :git => 'https://github.com/flaccid/cookbooks',
-   :path => 'cookbooks/django_application',
+cookbook 'application',
+   :git => 'https://github.com/opscode-cookbooks/application',
+   :ref => 'master'
+   
+cookbook 'gunicorn',
+   :git => 'https://github.com/opscode-cookbooks/gunicorn',
    :ref => 'master'

@@ -2,19 +2,8 @@ SITE
   remote: http://community.opscode.com/api/v1
   specs:
     apache2 (1.1.12)
-    application (1.0.0)
-      apache2 (>= 0.0.0)
-      gunicorn (>= 0.0.0)
-      passenger_apache2 (>= 0.0.0)
-      php (>= 0.0.0)
-      python (>= 1.0.6)
-      runit (>= 0.0.0)
-      tomcat (>= 0.0.0)
-      unicorn (>= 0.0.0)
     build-essential (1.1.0)
     chef_handler (1.0.6)
-    gunicorn (1.0.0)
-      python (>= 0)
     java (1.5.2)
     mysql (1.2.6)
       openssl (>= 0.0.0)
@@ -43,9 +32,25 @@ GIT
   remote: https://github.com/flaccid/cookbooks
   path: cookbooks/django_application
   ref: master
-  sha: 792b0de7373cdc0d1631bbb33f281289f1071142
+  sha: 2e37877f0ecd00b131ca8b8e05abd37e17cd490d
   specs:
     django_application (0.0.1)
+      application_python (>= 0.0.0)
+
+GIT
+  remote: https://github.com/opscode-cookbooks/application
+  ref: master
+  sha: cfdea88edbcc08f78dc81a64d1b4290b1858ef0a
+  specs:
+    application (1.0.0)
+      apache2 (>= 0.0.0)
+      gunicorn (>= 0.0.0)
+      passenger_apache2 (>= 0.0.0)
+      php (>= 0.0.0)
+      python (>= 1.0.6)
+      runit (>= 0.0.0)
+      tomcat (>= 0.0.0)
+      unicorn (>= 0.0.0)
 
 GIT
   remote: https://github.com/opscode-cookbooks/application_python
@@ -58,7 +63,17 @@ GIT
       python (>= 0.0.0)
       supervisor (>= 0.0.0)
 
+GIT
+  remote: https://github.com/opscode-cookbooks/gunicorn
+  ref: master
+  sha: cde251c4791082122c1c51ee1be70bd46c00dd6a
+  specs:
+    gunicorn (1.0.0)
+      python (>= 0.0.0)
+
 DEPENDENCIES
+  application (>= 0)
   application_python (>= 0)
   django_application (>= 0)
+  gunicorn (>= 0)
 
