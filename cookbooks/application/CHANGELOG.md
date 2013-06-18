@@ -1,3 +1,47 @@
+## v2.0.4:
+
+### Bug
+
+- [COOK-2812]: application cookbook doesn't allow to specify a block
+  as `restart_command`
+
+## v2.0.2:
+
+### Bug
+
+- [COOK-2537]: Provide proper `respond_to` behavior when using
+  `method_missing`
+- [COOK-2713]: application resource should Allow sub-resource
+  attributes to propogate up
+
+### Improvement
+
+- [COOK-2597]: Allow customization for shallow_clone when doing a git
+  deploy
+
+## v2.0.0:
+
+This release is incompatible with previous releases (hence major
+version change). The recipes used in older versions are deprecated and
+completely removed. See README.md for further detail.
+
+* [COOK-1673] - Deploy_revision in the application cookbook gives an
+  argument error
+* [COOK-1820] - Application cookbook: remove deprecated recipes
+
+## v1.0.4:
+
+* [COOK-1567] - Add git submodules to application cookbook
+
+## v1.0.2:
+
+* [COOK-1312] - string callbacks fail with method not found (really
+  included this time)
+* [COOK-1332] - add `release_path` and `shared_path` methods
+* [COOK-1333] - add example for running migrations
+* [COOK-1360] - fix minor typos in README
+* [COOK-1374] - use runit attributes in unicorn run script
+
 ## v1.0.0:
 
 This release introduces the LWRP for application deployment, as well

@@ -96,7 +96,7 @@ module Windows
       hive.send(mode, key_name, ::Win32::Registry::KEY_ALL_ACCESS | @@native_registry_constant) do |reg|
         changed_something = false
         values.each do |k,val|
-          key = "#{k}" #wtf. avoid "can't modify frozen string" in win32/registry.rb
+          key = k.to_s #wtf. avoid "can't modify frozen string" in win32/registry.rb
           cur_val = nil
           begin
             cur_val = reg[key]
@@ -105,11 +105,22 @@ module Windows
           end
           if cur_val != val
             Chef::Log.debug("setting #{key}=#{val}")
+            
             if type.nil?
-              reg[key] = val
-            else
-              reg[key, ::Win32::Registry::REG_BINARY] = val
+              type = :string
             end
+
+            reg_type = {
+              :binary => ::Win32::Registry::REG_BINARY,
+              :string => ::Win32::Registry::REG_SZ,
+              :multi_string => ::Win32::Registry::REG_MULTI_SZ,
+              :expand_string => ::Win32::Registry::REG_EXPAND_SZ,
+              :dword => ::Win32::Registry::REG_DWORD,
+              :dword_big_endian => ::Win32::Registry::REG_DWORD_BIG_ENDIAN,
+              :qword => ::Win32::Registry::REG_QWORD
+            }[type]
+
+            reg.write(key, reg_type, val)
 
             ensure_hive_unloaded(hive_loaded)
 
@@ -159,9 +170,14 @@ module Windows
       Chef::Log.debug("Deleting values in #{path}")
       hive.open(key, ::Win32::Registry::KEY_ALL_ACCESS | @@native_registry_constant) do | reg |
         values.each_key { |key|
-          name = "#{key}"
-          Chef::Log.debug("Deleting value #{name} in #{path}")
-          reg.delete_value(name)
+          name = key.to_s
+          # Ensure delete operation is idempotent.
+          if value_exists?(path, key)
+            Chef::Log.debug("Deleting value #{name} in #{path}")
+            reg.delete_value(name)
+          else
+            Chef::Log.debug("Value #{name} in #{path} does not exist, skipping.")
+          end
         }
       end
 

@@ -6,7 +6,7 @@ Provides a set of Windows-specific primitives (Chef resources) meant to aid in t
 Requirements
 ============
 
-Version 1.3.0+ of this cookbook requires Chef 0.10.10.
+Version 1.3.0+ of this cookbook requires Chef 0.10.10+.
 
 Platform
 --------
@@ -17,10 +17,20 @@ Platform
 * Windows 7
 * Windows Server 2008 (R1, R2)
 
+The `windows_task` LWRP requires Windows Server 2008 due to its API usage.
+
 Cookbooks
 ---------
 
+The following cookbooks provided by Opscode are required as noted:
+
 * chef_handler (`windows::reboot_handler` leverages the chef_handler LWRP)
+* powershell - The Printer and Printer Port LWRP require Powershell.
+
+**NOTE** We cannot specifically depend on Opscode's powershell,
+  because powershell depends on this cookbook. Ensure that
+  `recipe[powershell]` exists in the node's expanded run list so it
+  gets downloaded where the printer LWRPs are used.
 
 Attributes
 ==========
@@ -175,6 +185,11 @@ For maximum flexibility the `source` attribute supports both remote and local in
 - checksum: useful if source is remote, the SHA-256 checksum of the file--if the local file matches the checksum, Chef will not download it
 - options: Additional options to pass the underlying installation command
 - timeout: set a timeout for the package download (default 600 seconds)
+- version: The version number of this package, as indicated by the 'DisplayVersion' value in one of the 'Uninstall' registry keys.  If the given version number does equal the 'DisplayVersion' in the registry, the package will be installed.
+- success_codes: set an array of possible successful installation
+  return codes. Previously this was hardcoded, but certain MSIs may
+  have a different return code, e.g. 3010 for reboot required. Must be
+  an array, and defaults to `[0, 42, 127]`.
 
 ### Examples
 
@@ -228,6 +243,100 @@ For maximum flexibility the `source` attribute supports both remote and local in
     end
 
 
+windows\_printer\_port
+----------------------
+
+**Note** Include `recipe[powershell]` on the node's expanded run list
+  to ensure the powershell cookbook is downloaded to avoid circular
+  dependency.
+
+Create and delete TCP/IPv4 printer ports.
+
+### Actions
+
+- :create: Create a TCIP/IPv4 printer port. This is the default action.
+- :delete: Delete a TCIP/IPv4 printer port
+
+### Attribute Parameters
+
+- :ipv4_address: Name attribute. Required. IPv4 address, e.g. "10.0.24.34"
+- :port_name: Port name. Optional. Defaults to "IP_" + :ipv4_address
+- :port_number: Port number. Optional. Defaults to 9100.
+- :port_description: Port description. Optional.
+- :snmp_enabled: Boolean. Optional. Defaults to false.
+- :port_protocol: Port protocol, 1 (RAW), or 2 (LPR). Optional. Defaults to 1.
+
+### Examples
+
+    # simplest example. Creates a TCP/IP printer port named "IP_10.4.64.37"
+    # with all defaults
+    windows_printer_port '10.4.64.37' do
+    end
+
+    # delete a printer port
+    windows_printer_port '10.4.64.37' do
+      action :delete
+    end
+
+    # delete a port with a custom port_name
+    windows_printer_port '10.4.64.38' do
+      port_name "My awesome port"
+      action :delete
+    end
+
+    # Create a port with more options
+    windows_printer_port '10.4.64.39' do
+      port_name "My awesome port"
+      snmp_enabled true
+      port_protocol 2
+    end
+
+
+windows\_printer
+----------------
+
+**Note** Include `recipe[powershell]` on the node's expanded run list
+  to ensure the powershell cookbook is downloaded to avoid circular
+  dependency.
+
+Create Windows printer. Note that this doesn't currently install a printer
+driver. You must already have the driver installed on the system.
+
+The Windows Printer LWRP will automatically create a TCP/IP printer port for you using the `ipv4_address` property. If you want more granular control over the printer port, just create it using the `windows_printer_port` LWRP before creating the printer.
+
+### Actions
+
+- :create: Create a new printer
+- :delete: Delete a new printer
+
+### Attribute Parameters
+
+- :device_id: Name attribute. Required. Printer queue name, e.g. "HP LJ 5200 in fifth floor copy room"
+- :comment: Optional string describing the printer queue.
+- :default: Boolean. Optional. Defaults to false. Note that Windows sets the first printer defined to the default printer regardless of this setting.
+- :driver_name: String. Required. Exact name of printer driver. Note that the printer driver must already be installed on the node.
+- :location: Printer location, e.g. "Fifth floor copy room", or "US/NYC/Floor42/Room4207"
+- :shared: Boolean. Defaults to false.
+- :share_name: Printer share name.
+- :ipv4_address: Printer IPv4 address, e.g. "10.4.64.23". You don't have to be able to ping the IP addresss to set it. Required.
+
+
+### Examples
+
+    # create a printer
+    windows_printer 'HP LaserJet 5th Floor' do
+      driver_name 'HP LaserJet 4100 Series PCL6'
+      ipv4_address '10.4.64.38'
+    end
+
+    # delete a printer
+    # Note: this doesn't delete the associated printer port.
+    #   See `windows_printer_port` above for how to delete the port.
+    windows_printer 'HP LaserJet 5th Floor' do
+      action :delete
+    end
+
+
 windows\_reboot
 ---------------
 
@@ -278,7 +387,17 @@ Creates and modifies Windows registry keys.
 
 - key_name: name attribute. The registry key to create/modify.
 - values: hash of the values to set under the registry key. The individual hash items will become respective 'Value name' => 'Value data' items in the registry key.
-- type: Type of key to create, currently only used for :binary to create `REG_BINARY` registry keys. Must be a symbol. See __Roadmap__ for future plans.
+- type: Type of key to create, defaults to REG_SZ. Must be a symbol, see the overview below for valid values.
+
+### Registry key types
+
+- :binary: REG_BINARY
+- :string: REG_SZ
+- :multi_string: REG_MULTI_SZ
+- :expand_string: REG_EXPAND_SZ
+- :dword: REG_DWORD
+- :dword_big_endian: REG_DWORD_BIG_ENDIAN
+- :qword: REG_QWORD
 
 ### Examples
 
@@ -300,6 +419,12 @@ Creates and modifies Windows registry keys.
       action :remove
     end
 
+    # Add a REG_MULTI_SZ value to the registry
+    windows_registry 'HKCU\Software\Test' do
+      values 'MultiString' => ['line 1', 'line 2', 'line 3']
+      type :multi_string
+    end
+
 ### Library Methods
 
     Registry.value_exists?('HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run','BGINFO')
@@ -312,6 +437,7 @@ windows\_path
 ### Actions
 
 - :add: Add an item to the system path
+- :remove: Remove an item from the system path
 
 ### Attribute Parameters
 
@@ -324,6 +450,61 @@ windows\_path
       action :add
     end
 
+    #Remove 7-Zip from the system path
+    windows_path 'C:\7-Zip' do
+      action :remove
+    end
+
+windows\_task
+-------------
+
+Creates, deletes or runs a Windows scheduled task. Requires Windows
+Server 2008 due to API usage.
+
+### Actions
+
+- :create: creates a task
+- :delete: deletes a task
+- :run: runs a task
+- :change: changes the un/pw or command of a task
+
+### Attribute Parameters
+
+- name: name attribute, The task name.
+- command: The command the task will run.
+- cwd: The directory the task will be run from.
+- user: The user to run the task as. (requires password)
+- password: The user's password. (requires user)
+- run_level: Run with limited or highest privileges.
+- frequency: Frequency with which to run the task. (hourly, daily, ect.)
+- frequency_modifier: Multiple for frequency. (15 minutes, 2 days)
+
+### Examples
+
+    # Run Chef every 15 minutes
+    windows_task "Chef client" do
+      user "Administrator"
+      password "$ecR3t"
+      cwd "C:\chef\bin"
+      command "chef-client -L C:\tmp\"
+      run_level :highest
+      frequency :minute
+      frequency_modifier 15
+    end
+
+    # Update Chef Client task with new password and log location
+    windows_task "Chef client" do
+      user "Administrator"
+      password "N3wPassW0Rd"
+      cwd "C:\chef\bin"
+      command "chef-client -L C:\chef\logs\"
+      action :change
+    end
+
+    # Delete a taks named "old task"
+    windows_task "old task" do
+      action :delete
+    end
 
 windows\_zipfile
 ----------------
@@ -339,6 +520,7 @@ Most version of Windows do not ship with native cli utility for managing compres
 - path: name attribute. The path where files will be unzipped to.
 - source: The source of the zip file. This can either be a URI or a local path.
 - overwrite: force an overwrite of the files if the already exists.
+- checksum: useful if source is remote, the SHA-256 checksum of the file--if the local file matches the checksum, Chef will not download it
 
 ### Examples
 
@@ -406,10 +588,12 @@ License and Author
 Author:: Seth Chisamore (<schisamo@opscode.com>)
 Author:: Doug MacEachern (<dougm@vmware.com>)
 Author:: Paul Morton (<pmorton@biaprotect.com>)
+Author:: Doug Ireton (<doug.ireton@nordstrom.com>)
 
 Copyright:: 2011, Opscode, Inc.
 Copyright:: 2010, VMware, Inc.
 Copyright:: 2011, Business Intelligence Associates, Inc
+Copyright:: 2012, Nordstrom, Inc.
 
 
 Licensed under the Apache License, Version 2.0 (the "License");

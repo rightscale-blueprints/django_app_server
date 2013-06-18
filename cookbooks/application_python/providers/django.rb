@@ -18,6 +18,8 @@
 # limitations under the License.
 #
 
+require 'tmpdir'
+
 include Chef::Mixin::LanguageIncludeRecipe
 
 action :before_compile do
@@ -44,8 +46,8 @@ action :before_migrate do
   if new_resource.requirements.nil?
     # look for requirements.txt files in common locations
     [
-      ::File.join(new_resource.path, "requirements", "#{node.chef_environment}.txt"),
-      ::File.join(new_resource.path, "requirements.txt")
+      ::File.join(new_resource.release_path, "requirements", "#{node.chef_environment}.txt"),
+      ::File.join(new_resource.release_path, "requirements.txt")
     ].each do |path|
       if ::File.exists?(path)
         new_resource.requirements path
@@ -56,8 +58,19 @@ action :before_migrate do
   if new_resource.requirements
     Chef::Log.info("Installing using requirements file: #{new_resource.requirements}")
     pip_cmd = ::File.join(new_resource.virtualenv, 'bin', 'pip')
-    execute "#{pip_cmd} install -r #{new_resource.requirements}" do
+    execute "#{pip_cmd} install --source=#{Dir.tmpdir} -r #{new_resource.requirements}" do
       cwd new_resource.release_path
+      # seems that if we don't set the HOME env var pip tries to log to /root/.pip, which fails due to permissions
+      # setting HOME also enables us to control pip behavior on per-project basis by dropping off a pip.conf file there
+      # GIT_SSH allow us to reuse the deployment key used to clone the main
+      # repository to clone any private requirements
+      if new_resource.deploy_key
+        environment 'HOME' => ::File.join(new_resource.path,'shared'), 'GIT_SSH' => "#{new_resource.path}/deploy-ssh-wrapper"
+      else
+        environment 'HOME' => ::File.join(new_resource.path,'shared')
+      end
+      user new_resource.owner
+      group new_resource.group
     end
   else
     Chef::Log.debug("No requirements file found")
@@ -98,6 +111,8 @@ protected
 def install_packages
   python_virtualenv new_resource.virtualenv do
     path new_resource.virtualenv
+    owner new_resource.owner
+    group new_resource.group
     action :create
   end
 
@@ -105,6 +120,8 @@ def install_packages
     python_pip name do
       version ver if ver && ver.length > 0
       virtualenv new_resource.virtualenv
+      user new_resource.owner
+      group new_resource.group
       action :install
     end
   end
@@ -115,7 +132,7 @@ def created_settings_file
 
   template "#{new_resource.path}/shared/#{new_resource.local_settings_base}" do
     source new_resource.settings_template || "settings.py.erb"
-    cookbook new_resource.settings_template ? new_resource.cookbook_name : "application_python"
+    cookbook new_resource.settings_template ? new_resource.cookbook_name.to_s : "application_python"
     owner new_resource.owner
     group new_resource.group
     mode "644"
