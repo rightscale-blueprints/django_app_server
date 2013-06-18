@@ -5,7 +5,7 @@ site 'http://community.opscode.com/api/v1'
 
 cookbook 'application_python',
    :git => 'https://github.com/opscode-cookbooks/application_python',
-   :ref => '1.2.4'
+   :ref => 'master'
 
 cookbook 'django_application',
    :git => 'https://github.com/flaccid/cookbooks',
@@ -15,12 +15,12 @@ cookbook 'django_application',
 # add version control cookbooks
 cookbook 'git',
    :git => 'https://github.com/opscode-cookbooks/git',
-   :ref => '2.5.0'
+   :ref => 'master'
 
-#cookbook 'mercurial',
-#   :git => 'https://github.com/opscode-cookbooks/mercurial',
-#   :ref => '1.1.4'
+cookbook 'mercurial',
+   :git => 'https://github.com/opscode-cookbooks/mercurial',
+   :ref => 'master'
 
-#cookbook 'subversion',
-#   :git => 'https://github.com/opscode-cookbooks/subversion',
-#   :ref => '1.0.2'
+cookbook 'subversion',
+   :git => 'https://github.com/opscode-cookbooks/subversion',
+   :ref => 'master'

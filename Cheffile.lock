@@ -1,79 +1,58 @@
 SITE
   remote: http://community.opscode.com/api/v1
   specs:
-    apache2 (1.1.12)
-    build-essential (1.1.0)
-    chef_handler (1.0.6)
-    java (1.5.2)
-    mysql (1.2.6)
-      openssl (>= 0.0.0)
-      windows (>= 0.0.0)
-    openssl (1.0.0)
-    passenger_apache2 (0.99.4)
-      apache2 (>= 1.0.4)
-      build-essential (>= 0.0.0)
-    php (1.0.2)
-      build-essential (>= 0.0.0)
-      mysql (>= 0.0.0)
-      xml (>= 0.0.0)
-    python (1.0.6)
-      build-essential (>= 0.0.0)
-    runit (0.15.0)
-    supervisor (0.1.0)
+    application (2.0.4)
+    build-essential (1.4.0)
+    chef_handler (1.1.4)
+    dmg (1.1.0)
+    gunicorn (1.1.0)
       python (>= 0.0.0)
-    tomcat (0.10.4)
-      java (>= 0.0.0)
-    unicorn (1.0.0)
-    windows (1.3.2)
+    python (1.3.4)
+      build-essential (>= 0.0.0)
+      yum (>= 0.0.0)
+    runit (1.1.6)
+      build-essential (>= 0.0.0)
+      yum (>= 0.0.0)
+    supervisor (0.4.2)
+      python (>= 0.0.0)
+    windows (1.10.0)
       chef_handler (>= 0.0.0)
-    xml (1.0.4)
+    yum (2.3.0)
 
 GIT
   remote: https://github.com/flaccid/cookbooks
   path: cookbooks/django_application
   ref: master
-  sha: 2e37877f0ecd00b131ca8b8e05abd37e17cd490d
+  sha: a8391376c425aa7833549061e590857002f96b9a
   specs:
     django_application (0.0.1)
       application_python (>= 0.0.0)
 
 GIT
-  remote: https://github.com/opscode-cookbooks/application
-  ref: master
-  sha: cfdea88edbcc08f78dc81a64d1b4290b1858ef0a
-  specs:
-    application (1.0.0)
-      apache2 (>= 0.0.0)
-      gunicorn (>= 0.0.0)
-      passenger_apache2 (>= 0.0.0)
-      php (>= 0.0.0)
-      python (>= 1.0.6)
-      runit (>= 0.0.0)
-      tomcat (>= 0.0.0)
-      unicorn (>= 0.0.0)
-
-GIT
   remote: https://github.com/opscode-cookbooks/application_python
-  ref: master
-  sha: 6b0ccdd3b4d86a946250f0801b7743fba3a2ce15
+  ref: 1.2.4
+  sha: 10512d70e9f803f7313066e667e9573dfe1b613b
   specs:
-    application_python (1.0.0)
+    application_python (1.2.4)
       application (>= 0.0.0)
       gunicorn (>= 0.0.0)
       python (>= 0.0.0)
       supervisor (>= 0.0.0)
 
 GIT
-  remote: https://github.com/opscode-cookbooks/gunicorn
-  ref: master
-  sha: cde251c4791082122c1c51ee1be70bd46c00dd6a
+  remote: https://github.com/opscode-cookbooks/git
+  ref: 2.5.0
+  sha: b137798daeedcd28437f78c6e4155ce48547ed7e
   specs:
-    gunicorn (1.0.0)
-      python (>= 0.0.0)
+    git (2.5.0)
+      build-essential (>= 0.0.0)
+      dmg (>= 0.0.0)
+      runit (>= 1.0)
+      windows (>= 0.0.0)
+      yum (>= 0.0.0)
 
 DEPENDENCIES
-  application (>= 0)
   application_python (>= 0)
   django_application (>= 0)
-  gunicorn (>= 0)
+  git (>= 0)
 
