@@ -1,3 +1,13 @@
 {
-  "run_list": [ "recipe[django_application]" ]
+  "django_application": {
+    "name":"django-blank",
+    "path":"/srv/django-blank",
+    "repository": {
+      "url": "https://github.com/flaccid/django-blank.git",
+      "revision":"master"
+    },
+    "requirements":"requirements.txt",
+    "settings_template":"django-blank.local_settings.py.erb"
+  },
+  "run_list":["django_application"]
 }
