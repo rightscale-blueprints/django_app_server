@@ -1,0 +1,26 @@
+{
+  "django_application": {
+    "name":"packaginator",
+    "path":"/srv/packaginator",
+    "owner":"nobody",
+    "group":"nogroup",
+    "repository": {
+      "url": "https://github.com/coderanger/packaginator.git",
+      "revision":"master"
+    },
+    "migrate":true,
+    "packages": ["libpq-dev", "git-core", "mercurial"],
+    "database_master_role":"packaginator_database_master",
+    "collectstatic":"build_static --noinput",
+    "database": {
+      "schema":"packaginator",
+      "engine":"postgresql_psycopg2",
+      "username":"packaginator",
+      "password":"awesome_password"
+    },
+    "requirements":"requirements/mkii.txt",
+    "settings_template":"packaginator.local_settings.py.erb",
+    "debug":true
+  },
+  "run_list":["django_application"]
+}
