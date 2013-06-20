@@ -1,44 +1,44 @@
 {
+  "dependencies": {
+  },
+  "long_description": "",
+  "license": "Apache 2.0",
+  "maintainer_email": "cookbooks@opscode.com",
+  "maintainer": "Opscode, Inc.",
+  "replacing": {
+  },
+  "recipes": {
+    "build-essential": "Installs packages required for compiling C software from source."
+  },
   "conflicting": {
   },
   "platforms": {
-    "amazon": ">= 0.0.0",
-    "fedora": ">= 0.0.0",
-    "mac_os_x_server": ">= 10.6.0",
-    "redhat": ">= 0.0.0",
-    "mac_os_x": ">= 10.6.0",
     "smartos": ">= 0.0.0",
+    "mac_os_x": ">= 10.6.0",
     "oracle": ">= 0.0.0",
-    "centos": ">= 0.0.0",
-    "scientific": ">= 0.0.0",
-    "suse": ">= 0.0.0",
+    "amazon": ">= 0.0.0",
     "ubuntu": ">= 0.0.0",
-    "debian": ">= 0.0.0"
+    "debian": ">= 0.0.0",
+    "fedora": ">= 0.0.0",
+    "redhat": ">= 0.0.0",
+    "suse": ">= 0.0.0",
+    "mac_os_x_server": ">= 10.6.0",
+    "scientific": ">= 0.0.0",
+    "centos": ">= 0.0.0"
+  },
+  "name": "build-essential",
+  "version": "1.4.0",
+  "groupings": {
   },
   "attributes": {
   },
-  "dependencies": {
-  },
   "providing": {
-  },
-  "maintainer": "Opscode, Inc.",
-  "long_description": "",
-  "version": "1.4.0",
-  "maintainer_email": "cookbooks@opscode.com",
-  "replacing": {
-  },
-  "recommendations": {
-  },
-  "groupings": {
-  },
-  "description": "Installs C compiler / build tools",
-  "recipes": {
-    "build-essential": "Installs packages required for compiling C software from source."
   },
   "suggestions": {
     "pkgin": ">= 0.0.0",
     "pkgutil": ">= 0.0.0"
   },
-  "name": "build-essential",
-  "license": "Apache 2.0"
+  "recommendations": {
+  },
+  "description": "Installs C compiler / build tools"
 }

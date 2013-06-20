@@ -1,186 +1,186 @@
 {
   "version": "0.0.1",
-  "name": "django_application",
-  "maintainer": "Chris Fordham",
   "recommendations": {
   },
-  "maintainer_email": "chris@xhost.com.au",
-  "long_description": "Description\n===========\n\nRequirements\n============\n\nAttributes\n==========\n\nUsage\n=====\n\n",
-  "providing": {
+  "dependencies": {
+    "mercurial": ">= 0.0.0",
+    "git": ">= 0.0.0",
+    "application_python": ">= 0.0.0",
+    "subversion": ">= 0.0.0"
   },
+  "groupings": {
+  },
+  "suggestions": {
+  },
+  "long_description": "Description\n===========\n\nRequirements\n============\n\nAttributes\n==========\n\nUsage\n=====\n\n",
+  "platforms": {
+  },
+  "maintainer": "Chris Fordham",
   "conflicting": {
   },
   "recipes": {
-    "django_application::git": "Installs git using the Opscode git cookbook.",
     "django_application::application": "Sets up a Django application server.",
-    "django_application::default": "Sets up a Django application server using the django_application::application recipe."
+    "django_application::default": "Sets up a Django application server using the django_application::application recipe.",
+    "django_application::git": "Installs git using the Opscode git cookbook."
   },
-  "platforms": {
+  "replacing": {
   },
+  "license": "Apache 2.0",
+  "name": "django_application",
   "attributes": {
     "django_application/requirements": {
-      "type": "string",
-      "required": "optional",
-      "calculated": false,
       "choice": [
         "requirements.txt",
         "requirements/requirements.txt"
       ],
+      "type": "string",
       "display_name": "Django Application PIP Requirements",
       "recipes": [
         "django_application::default",
         "django_application::application"
       ],
-      "description": "A requirements file within the application to use for installing PIP packages for the Django application."
-    },
-    "django_application/packages": {
-      "type": "string",
+      "description": "A requirements file within the application to use for installing PIP packages for the Django application.",
       "required": "optional",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "display_name": "Django Application Packages",
-      "recipes": [
-        "django_application::default",
-        "django_application::application"
-      ],
-      "description": "Additional system packages to install for the Django application."
-    },
-    "django_application/name": {
-      "type": "string",
-      "required": "required",
-      "calculated": false,
-      "choice": [
-
-      ],
-      "display_name": "Django Application Name",
-      "recipes": [
-        "django_application::default",
-        "django_application::application"
-      ],
-      "description": "A name for the Django application is being deployed."
-    },
-    "django_application/settings_template": {
-      "type": "string",
-      "required": "optional",
-      "calculated": false,
-      "choice": [
-        "blank-django.local_settings.py.erb",
-        "django-blank.local_settings.py.erb",
-        "packaginator.local_settings.py.erb"
-      ],
-      "display_name": "Django Application Settings Template",
-      "recipes": [
-        "django_application::default",
-        "django_application::application"
-      ],
-      "description": "A local_settings template within the cookbook to use for the Django application."
-    },
-    "django_application/path": {
-      "type": "string",
-      "required": "recommended",
-      "calculated": false,
-      "default": "/srv/django-app",
-      "choice": [
-
-      ],
-      "display_name": "Django Application Path",
-      "recipes": [
-        "django_application::default",
-        "django_application::application"
-      ],
-      "description": "The directory to deploy the Django application to."
+      "calculated": false
     },
     "django_application/group": {
-      "type": "string",
-      "required": "optional",
-      "calculated": false,
-      "default": "nogroup",
       "choice": [
 
       ],
+      "type": "string",
       "display_name": "Django Application Group",
       "recipes": [
         "django_application::default",
         "django_application::application"
       ],
-      "description": "The system group of the directory where the Django application is being deployed."
+      "default": "nogroup",
+      "description": "The system group of the directory where the Django application is being deployed.",
+      "required": "optional",
+      "calculated": false
     },
     "django_application/repository/revision": {
-      "type": "string",
-      "required": "recommended",
-      "calculated": false,
-      "default": "master",
       "choice": [
 
       ],
+      "type": "string",
       "display_name": "Django Application Revision",
       "recipes": [
         "django_application::default",
         "django_application::application"
       ],
-      "description": "The revision of the Django application to deploy."
+      "default": "master",
+      "description": "The revision of the Django application to deploy.",
+      "required": "recommended",
+      "calculated": false
     },
-    "django_application/pip/packages": {
-      "type": "string",
-      "required": "optional",
-      "calculated": false,
+    "django_application/name": {
       "choice": [
 
       ],
+      "type": "string",
+      "display_name": "Django Application Name",
+      "recipes": [
+        "django_application::default",
+        "django_application::application"
+      ],
+      "description": "A name for the Django application is being deployed.",
+      "required": "required",
+      "calculated": false
+    },
+    "django_application/pip/packages": {
+      "choice": [
+
+      ],
+      "type": "string",
       "display_name": "Django Application PIP Packages",
       "recipes": [
         "django_application::default",
         "django_application::application"
       ],
-      "description": "Additional PIP packages to install for the Django application."
+      "description": "Additional PIP packages to install for the Django application.",
+      "required": "optional",
+      "calculated": false
     },
-    "django_application/repository/url": {
-      "type": "string",
-      "required": "required",
-      "calculated": false,
-      "default": "https://github.com/flaccid/django-blank.git",
+    "django_application/packages": {
       "choice": [
-        "https://github.com/flaccid/django-blank.git",
-        "https://github.com/toast38coza/blank-django.git",
-        "https://github.com/coderanger/packaginator.git"
+
       ],
-      "display_name": "Django Application Repository URL",
+      "type": "string",
+      "display_name": "Django Application Packages",
       "recipes": [
         "django_application::default",
         "django_application::application"
       ],
-      "description": "The URL to the repository where the Django application is stored."
+      "description": "Additional system packages to install for the Django application.",
+      "required": "optional",
+      "calculated": false
     },
     "django_application/owner": {
-      "type": "string",
-      "required": "optional",
-      "calculated": false,
-      "default": "nobody",
       "choice": [
 
       ],
+      "type": "string",
       "display_name": "Django Application Owner",
       "recipes": [
         "django_application::default",
         "django_application::application"
       ],
-      "description": "The system user to own the directory where the Django application is being deployed."
+      "default": "nobody",
+      "description": "The system user to own the directory where the Django application is being deployed.",
+      "required": "optional",
+      "calculated": false
+    },
+    "django_application/repository/url": {
+      "choice": [
+        "https://github.com/flaccid/django-blank.git",
+        "https://github.com/toast38coza/blank-django.git",
+        "https://github.com/coderanger/packaginator.git"
+      ],
+      "type": "string",
+      "display_name": "Django Application Repository URL",
+      "recipes": [
+        "django_application::default",
+        "django_application::application"
+      ],
+      "default": "https://github.com/flaccid/django-blank.git",
+      "description": "The URL to the repository where the Django application is stored.",
+      "required": "recommended",
+      "calculated": false
+    },
+    "django_application/path": {
+      "choice": [
+
+      ],
+      "type": "string",
+      "display_name": "Django Application Path",
+      "recipes": [
+        "django_application::default",
+        "django_application::application"
+      ],
+      "default": "/srv/django-app",
+      "description": "The directory to deploy the Django application to.",
+      "required": "recommended",
+      "calculated": false
+    },
+    "django_application/settings_template": {
+      "choice": [
+        "blank-django.local_settings.py.erb",
+        "django-blank.local_settings.py.erb",
+        "packaginator.local_settings.py.erb"
+      ],
+      "type": "string",
+      "display_name": "Django Application Settings Template",
+      "recipes": [
+        "django_application::default",
+        "django_application::application"
+      ],
+      "description": "A local_settings template within the cookbook to use for the Django application.",
+      "required": "optional",
+      "calculated": false
     }
   },
-  "dependencies": {
-    "git": ">= 0.0.0",
-    "subversion": ">= 0.0.0",
-    "mercurial": ">= 0.0.0",
-    "application_python": ">= 0.0.0"
-  },
-  "license": "Apache 2.0",
   "description": "Installs/Configures django_application",
-  "groupings": {
-  },
-  "replacing": {
-  },
-  "suggestions": {
+  "maintainer_email": "chris@xhost.com.au",
+  "providing": {
   }
 }
