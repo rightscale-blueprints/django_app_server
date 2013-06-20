@@ -1,33 +1,33 @@
 {
-  "providing": {
+  "suggestions": {
   },
+  "license": "Apache 2.0",
+  "maintainer_email": "noah@opscode.com",
+  "dependencies": {
+    "python": ">= 0.0.0"
+  },
+  "maintainer": "Noah Kantrowitz",
   "attributes": {
   },
+  "name": "supervisor",
+  "groupings": {
+  },
+  "providing": {
+  },
+  "long_description": "",
+  "version": "0.4.2",
+  "description": "Installs supervisor and provides resources to configure services",
+  "recommendations": {
+  },
+  "recipes": {
+    "supervisor": "Installs and configures supervisord"
+  },
   "replacing": {
+  },
+  "conflicting": {
   },
   "platforms": {
     "ubuntu": ">= 0.0.0",
     "debian": ">= 0.0.0"
-  },
-  "maintainer": "Noah Kantrowitz",
-  "long_description": "",
-  "recipes": {
-    "supervisor": "Installs and configures supervisord"
-  },
-  "conflicting": {
-  },
-  "suggestions": {
-  },
-  "name": "supervisor",
-  "dependencies": {
-    "python": ">= 0.0.0"
-  },
-  "description": "Installs supervisor and provides resources to configure services",
-  "license": "Apache 2.0",
-  "version": "0.4.2",
-  "recommendations": {
-  },
-  "groupings": {
-  },
-  "maintainer_email": "noah@opscode.com"
+  }
 }
