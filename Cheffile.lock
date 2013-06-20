@@ -23,7 +23,7 @@ GIT
   remote: https://github.com/flaccid/cookbooks
   path: cookbooks/django_application
   ref: master
-  sha: a8391376c425aa7833549061e590857002f96b9a
+  sha: d36a8e9a9ef5135b5bed30264f06165a0575ebe3
   specs:
     django_application (0.0.1)
       application_python (>= 0.0.0)
