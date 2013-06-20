@@ -17,10 +17,10 @@ cookbook 'git',
    :git => 'https://github.com/opscode-cookbooks/git',
    :ref => '2.5.0'
 
-#cookbook 'mercurial',
-#   :git => 'https://github.com/opscode-cookbooks/mercurial',
-#   :ref => '1.1.4'
+cookbook 'mercurial',
+   :git => 'https://github.com/opscode-cookbooks/mercurial',
+   :ref => '1.1.4'
 
-#cookbook 'subversion',
-#   :git => 'https://github.com/opscode-cookbooks/subversion',
-#   :ref => '1.0.2'
+cookbook 'subversion',
+   :git => 'https://github.com/opscode-cookbooks/subversion',
+   :ref => '1.0.2'

@@ -1,6 +1,7 @@
 SITE
   remote: http://community.opscode.com/api/v1
   specs:
+    apache2 (1.6.6)
     application (2.0.4)
     build-essential (1.4.0)
     chef_handler (1.1.4)
@@ -51,8 +52,28 @@ GIT
       windows (>= 0.0.0)
       yum (>= 0.0.0)
 
+GIT
+  remote: https://github.com/opscode-cookbooks/mercurial
+  ref: 1.1.4
+  sha: 7d21dfb9211613da09f41c7a71796f809225bd8a
+  specs:
+    mercurial (1.1.4)
+      python (>= 0.0.0)
+      windows (>= 0.0.0)
+
+GIT
+  remote: https://github.com/opscode-cookbooks/subversion
+  ref: 1.0.2
+  sha: 113006dbe3e9d13f6701dd40e58e32e7f9a83140
+  specs:
+    subversion (1.0.2)
+      apache2 (>= 0.0.0)
+      windows (>= 0.0.0)
+
 DEPENDENCIES
   application_python (>= 0)
   django_application (>= 0)
   git (>= 0)
+  mercurial (>= 0)
+  subversion (>= 0)
 
