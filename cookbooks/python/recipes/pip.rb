@@ -18,36 +18,24 @@
 # limitations under the License.
 #
 
-# Where does pip get installed?
-# platform/method: path (proof)
-# redhat/package: /usr/bin/pip (sha a8a3a3)
-# omnibus/source: /opt/local/bin/pip (sha 29ce9874)
-
-if node['python']['install_method'] == 'source'
-  pip_binary = "#{node['python']['prefix_dir']}/bin/pip"
-elsif platform_family?("rhel")
-  pip_binary = "/usr/bin/pip"
-elsif platform_family?("smartos")
-  pip_binary = "/opt/local/bin/pip"
-else
-  pip_binary = "/usr/local/bin/pip"
-end
+python_bindir = "#{node['python']['prefix_dir']}/bin"
+pip_bindir    = "#{node['python']['pip']['prefix_dir']}/bin"
 
 # Ubuntu's python-setuptools, python-pip and python-virtualenv packages
 # are broken...this feels like Rubygems!
 # http://stackoverflow.com/questions/4324558/whats-the-proper-way-to-install-pip-virtualenv-and-distribute-for-python
 # https://bitbucket.org/ianb/pip/issue/104/pip-uninstall-on-ubuntu-linux
 remote_file "#{Chef::Config[:file_cache_path]}/distribute_setup.py" do
-  source node['python']['distribute_script_url']
+  source "http://python-distribute.org/distribute_setup.py"
   mode "0644"
-  not_if { ::File.exists?(pip_binary) }
+  not_if { ::File.exists?("#{pip_bindir}/pip") }
 end
 
-execute "install-pip" do
+bash "install-pip" do
   cwd Chef::Config[:file_cache_path]
-  command <<-EOF
-  #{node['python']['binary']} distribute_setup.py --download-base=#{node['python']['distribute_option']['download_base']}
-  #{::File.dirname(pip_binary)}/easy_install pip
+  code <<-EOF
+  #{python_bindir}/python distribute_setup.py
+  #{pip_bindir}/easy_install pip
   EOF
-  not_if { ::File.exists?(pip_binary) }
+  not_if { ::File.exists?("#{pip_bindir}/pip") }
 end

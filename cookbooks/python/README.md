@@ -47,11 +47,9 @@ Install packages using the new hotness in Python package management...[`pip`](ht
 
 # Actions
 
-- :install: Install a pip package - if version is provided, install that specific version (default)
+- :install: Install a pip package - if version is provided, install that specific version
 - :upgrade: Upgrade a pip package - if version is provided, upgrade to that specific version
 - :remove: Remove a pip package
-- :user: User to run pip as, for using with virtualenv
-- :group: Group to run pip as, for using with virtualenv
 - :purge: Purge a pip package (this usually entails removing configuration files as well as the package itself).  With pip packages this behaves the same as `:remove`
 
 # Attribute Parameters
@@ -65,21 +63,26 @@ Install packages using the new hotness in Python package management...[`pip`](ht
 # Example
 
     # install latest gunicorn into system path
-    python_pip "gunicorn"
+    python_pip "gunicorn" do
+      action :install
+    end
 
     # target a virtualenv
     python_pip "gunicorn" do
       virtualenv "/home/ubunut/my_ve"
+      action :install
     end
 
     # install Django 1.1.4
     python_pip "django" do
       version "1.1.4"
+      action :install
     end
 
     # use this provider with the core package resource
     package "django" do
       provider Chef::Provider::PythonPip
+      action :install
     end
 
 `python_virtualenv`
